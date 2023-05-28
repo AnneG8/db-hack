@@ -2,6 +2,13 @@ from datetime import date
 import random
 from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
                                Schoolkid, Subject)
+COMMENDATION_TEXTS = ['Молодец!', 'Отлично!', 'Хорошо!', 
+	'Гораздо лучше, чем ожидалось!', 'Ты меня приятно удивил!', 
+	'Великолепно!', 'Прекрасно!', 'Ты сегодня прыгнул выше головы!',
+	'Именно этого я давно ждал от тебя!', 'Сказано здорово – просто и ясно!',
+ 	'Ты, как всегда, точен!', 'Очень хороший ответ!', 'Талантливо!', 
+ 	'Ты меня очень обрадовал!', 'Я поражен!', 'Уже существенно лучше!',
+ 	'Потрясающе!', 'Замечательно!', 'Прекрасное начало!', 'Так держать!']
 
 
 def get_child(schoolkid):
@@ -54,19 +61,11 @@ def create_commendation(schoolkid, subject, сommendation=None):
 		print('По данному предмету ко всем урокам уже есть похвала')
 		return
 
-	commendation_texts = ['Молодец!', 'Отлично!', 'Хорошо!', 
-	'Гораздо лучше, чем ожидалось!', 'Ты меня приятно удивил!', 
-	'Великолепно!', 'Прекрасно!', 'Ты сегодня прыгнул выше головы!',
-	'Именно этого я давно ждал от тебя!', 'Сказано здорово – просто и ясно!',
- 	'Ты, как всегда, точен!', 'Очень хороший ответ!', 'Талантливо!', 
- 	'Ты меня очень обрадовал!', 'Я поражен!', 'Уже существенно лучше!',
- 	'Потрясающе!', 'Замечательно!', 'Прекрасное начало!', 'Так держать!']
-
 	for lesson in all_subject_lessons:
 		if not subject_commendations.filter(created=lesson.date, 
 											teacher=lesson.teacher):
 			if сommendation is None:
-				сommendation = random.choice(commendation_texts)
+				сommendation = random.choice(COMMENDATION_TEXTS)
 			Commendation.objects.create(
 				text=сommendation, 
 				schoolkid=child, 
