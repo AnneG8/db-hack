@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from datetime import date
 import random
 from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
@@ -9,10 +8,10 @@ def get_child(schoolkid):
 	try:
 		child = Schoolkid.objects.get(full_name__contains=schoolkid)
 		return child
-	except MultipleObjectsReturned:
+	except Schoolkid.MultipleObjectsReturned:
 		print('По вашему запросу найдено несколько учеников. ' \
 			  'Попробуйте задать подробнее.')
-	except ObjectDoesNotExist:
+	except Schoolkid.DoesNotExist:
 		print('По вашему запросу не найден ни один ученик.')
 	return False
 
