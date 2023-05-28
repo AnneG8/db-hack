@@ -43,35 +43,24 @@ def create_commendation(schoolkid, subject, сommendation=None):
     if not child:
         return
 
-    subject_commendations = Commendation.objects.filter(
-        schoolkid=child,
-        subject__title=subject
-    ).order_by('-created')
-    all_subject_lessons = Lesson.objects.filter(
+    random_lesson = random.choice(Lesson.objects.filter(
         year_of_study=child.year_of_study,
         group_letter=child.group_letter,
         subject__title=subject,
         date__lte=date.today()
-    ).order_by('-date')
+    ))
 
-    if not all_subject_lessons.count():
+    if not random_lesson:
         print('По данному предмету нет уроков. '
               'Проверьте, корректно ли указан данный параметр')
         return
-    if subject_commendations.count() == all_subject_lessons.count():
-        print('По данному предмету ко всем урокам уже есть похвала')
-        return
+    if сommendation is None:
+        сommendation = random.choice(COMMENDATION_TEXTS)
 
-    for lesson in all_subject_lessons:
-        if not subject_commendations.filter(created=lesson.date,
-                                            teacher=lesson.teacher):
-            if сommendation is None:
-                сommendation = random.choice(COMMENDATION_TEXTS)
-            Commendation.objects.create(
-                text=сommendation,
-                schoolkid=child,
-                teacher=lesson.teacher,
-                subject=lesson.subject,
-                created=lesson.date
-            )
-            break
+    Commendation.objects.create(
+        text=сommendation,
+        schoolkid=child,
+        teacher=random_lesson.teacher,
+        subject=random_lesson.subject,
+        created=random_lesson.date
+    )
